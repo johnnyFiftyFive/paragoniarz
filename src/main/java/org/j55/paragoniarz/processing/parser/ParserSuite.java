@@ -1,6 +1,7 @@
 package org.j55.paragoniarz.processing.parser;
 
 import org.j55.paragoniarz.processing.Receipt;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.Set;
 /**
  * @author johnnyFiftyFive
  */
+@Component
 public class ParserSuite {
     private static final Set<Parser> parsers;
 
