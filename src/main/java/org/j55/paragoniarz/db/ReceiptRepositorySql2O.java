@@ -12,9 +12,9 @@ import java.util.List;
 public class ReceiptRepositorySql2O extends CommonRepository<Receipt> implements ReceiptRepository {
 
     private static final String INSERT = "INSERT INTO RECEIPT(taxNumber, transactionDate, receiptNumber, cashId, total, sourceId) VALUES(" +
-            ":taxNumber, :date, :receiptNumber, :cashId, :total, :sourceId);";
+            ":taxNumber, :transactionDate, :receiptNumber, :cashId, :total, :sourceId);";
 
-    private static String SELECT_TO_PROCESS = "SELECT FROM RECEIPT(id, taxNumber, transactionDate, receiptNumber, cashId, total, status, sourceId) " +
+    private static String SELECT_TO_PROCESS = "SELECT id, taxNumber, transactionDate, receiptNumber, cashId, total, status, sourceId FROM RECEIPT " +
             "WHERE status=10";
 
     @Override public void save(Receipt receipt) {

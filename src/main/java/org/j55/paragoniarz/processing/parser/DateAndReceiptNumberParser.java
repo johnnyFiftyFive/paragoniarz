@@ -3,7 +3,6 @@ package org.j55.paragoniarz.processing.parser;
 import org.j55.paragoniarz.processing.Receipt;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -32,7 +31,7 @@ public class DateAndReceiptNumberParser extends Parser {
                     .flatMap(n -> match(RECEIPT_NUMBER, n));
             date.map(s -> s.replaceAll("[\\s]", "-"))
                     .map(LocalDate::parse)
-                    .ifPresent(receipt::setDate);
+                    .ifPresent(receipt::setTransactionDate);
             number.ifPresent(receipt::setReceiptNumber);
 
             return date.isPresent() && number.isPresent();

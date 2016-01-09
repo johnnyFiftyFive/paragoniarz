@@ -6,8 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import org.sql2o.converters.Converter;
+import org.sql2o.quirks.NoQuirks;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author johnnyFiftyFive
@@ -15,7 +20,10 @@ import java.util.List;
 @Service
 public abstract class CommonRepository<T> {
     protected static final Logger logger = LoggerFactory.getLogger(CommonRepository.class);
-    private static final Sql2o db = new Sql2o("jdbc:sqlite:paragoniarz.sqlite", "", "");
+    private static final Map<Class, Converter> CONVERTERS = new HashMap<Class, Converter>() {{
+        put(LocalDate.class, new LocalDateConverter());
+    }};
+    private static final Sql2o db = new Sql2o("jdbc:sqlite:paragoniarz.sqlite", "", "", new NoQuirks(CONVERTERS));
 
     /**
      * @return opened connection
@@ -33,10 +41,13 @@ public abstract class CommonRepository<T> {
         }
     }
 
-    protected List<? extends T> select(String sql, Class<? extends T> clazz) {
+    protected List<T> select(String sql, Class<T> clazz) {
         try (Connection conn = openConnection()) {
             return conn.createQuery(sql)
                     .executeAndFetch(clazz);
         }
+
     }
+
+
 }

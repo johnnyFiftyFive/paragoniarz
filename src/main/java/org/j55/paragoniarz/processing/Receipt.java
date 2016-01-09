@@ -10,10 +10,11 @@ import java.time.LocalDate;
 public class Receipt {
     private Integer id;
     private String taxNumber;
-    private LocalDate date;
+    private LocalDate transactionDate;
     private String receiptNumber;
     private String cashId;
     private String total;
+    private int status;
     private Integer sourceId;
 
     public Integer getId() {
@@ -40,12 +41,12 @@ public class Receipt {
         this.taxNumber = taxNumber.replaceAll("-|\\s", "");
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getTransactionDate() {
+        return transactionDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setTransactionDate(LocalDate transactionDate) {
+        this.transactionDate = transactionDate;
     }
 
     public String getReceiptNumber() {
@@ -61,7 +62,7 @@ public class Receipt {
     }
 
     public void setCashId(String cashId) {
-        this.cashId = cashId;
+        this.cashId = cashId.replaceAll("\\s", "");
     }
 
     public String getTotal() {
@@ -74,6 +75,14 @@ public class Receipt {
 
     @Override
     public String toString() {
-        return String.format("{ 'taxNumber': '%s',\t 'date': '%s',\t 'receiptNumber': '%s',\t 'cashId': '%s',\t 'total': '%s' }", taxNumber, date, receiptNumber, cashId, total);
+        return String.format("{ 'taxNumber': '%s',\t 'transactionDate': '%s',\t 'receiptNumber': '%s',\t 'cashId': '%s',\t 'total': '%s' }", taxNumber, transactionDate, receiptNumber, cashId, total);
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
