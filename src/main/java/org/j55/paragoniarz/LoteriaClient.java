@@ -19,11 +19,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import static org.j55.paragoniarz.Constants.*;
 
 /**
  * @author johnnyFiftyFive
@@ -64,7 +68,7 @@ public class LoteriaClient {
             executeRequest(captchaUpdateReq);
             captchaUpdateReq.reset();
 
-            HttpPost addReceiptReq = prepareReceiptReq(token, captcha);
+            HttpPost addReceiptReq = prepareReceiptReq(receipt, token, captcha);
             executeRequest(addReceiptReq);
             addReceiptReq.reset();
 
@@ -95,13 +99,6 @@ public class LoteriaClient {
         return post;
     }
 
-    private void setEntity(HttpPost post, List<NameValuePair> pairs) {
-        try {
-            post.setEntity(new UrlEncodedFormEntity(pairs, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // will not happen
-        }
-    }
 
     private HttpGet prepareCaptchaUpdateReq(String token) {
         HttpGet get = new HttpGet(ADDRESS + "/validation/captcha?update=1");
@@ -122,7 +119,7 @@ public class LoteriaClient {
         return post;
     }
 
-    private HttpPost prepareReceiptReq(String token, @NotNull String captcha) throws ClientException {
+    private HttpPost prepareReceiptReq(Receipt receipt, String token, @NotNull String captcha) throws ClientException {
         if (captcha.isEmpty()) {
             throw new ClientException("Captcha is empty");
         }
@@ -130,20 +127,20 @@ public class LoteriaClient {
         post.setHeaders(createHeaders(token));
 
         List<NameValuePair> pairs = new ArrayList<>(15);
-        pairs.add(new BasicNameValuePair("nr_kasy", "BGE14106599"));
-        pairs.add(new BasicNameValuePair("nip", "6271159856"));
-        pairs.add(new BasicNameValuePair("rok", "2016"));
-        pairs.add(new BasicNameValuePair("miesiac", "01"));
-        pairs.add(new BasicNameValuePair("dzien", "07"));
-        pairs.add(new BasicNameValuePair("nr_wydruku", "001199"));
-        pairs.add(new BasicNameValuePair("kwota_zl", "17"));
-        pairs.add(new BasicNameValuePair("kwota_gr", "00"));
-        pairs.add(new BasicNameValuePair("branza", ""));
-        pairs.add(new BasicNameValuePair("captcha", captcha));
-        pairs.add(new BasicNameValuePair("zgoda_dane", "true"));
-        pairs.add(new BasicNameValuePair("zgoda_wizerunek", "false"));
-        pairs.add(new BasicNameValuePair("email", Properties.get(Properties.USER)));
-        pairs.add(new BasicNameValuePair("nr_tel", Properties.get(Properties.PHONE)));
+        pairs.add(new BasicNameValuePair(CASH_ID, receipt.getCashId()));
+        pairs.add(new BasicNameValuePair(TAX_NUMBER, "6271159856"));
+        pairs.add(new BasicNameValuePair(YEAR, "2016"));
+        pairs.add(new BasicNameValuePair(MONTH, "01"));
+        pairs.add(new BasicNameValuePair(DAY, "07"));
+        pairs.add(new BasicNameValuePair(PRINT_NUMBER, "001199"));
+        pairs.add(new BasicNameValuePair(TOTAL_ZL, "17"));
+        pairs.add(new BasicNameValuePair(TOTAL_GR, "00"));
+        pairs.add(new BasicNameValuePair(BUSINESS_TYPE, ""));
+        pairs.add(new BasicNameValuePair(CAPTCHA, captcha));
+        pairs.add(new BasicNameValuePair(DATA_AGGR, "true"));
+        pairs.add(new BasicNameValuePair(IMAGE_AGGR, "false"));
+        pairs.add(new BasicNameValuePair(EMAIL, Properties.get(Properties.USER)));
+        pairs.add(new BasicNameValuePair(PHONE_NUMBER, Properties.get(Properties.PHONE)));
         setEntity(post, pairs);
 
         return post;
@@ -159,7 +156,6 @@ public class LoteriaClient {
                 new BasicHeader("referer", ADDRESS)};
         return headers;
     }
-
 
     private String extractToken(InputStream is) throws IOException {
         Document doc = Jsoup.parse(is, "UTF-8", ADDRESS);
@@ -186,18 +182,11 @@ public class LoteriaClient {
         this.cookies = cookies;
     }
 
-    public String readStream(InputStream in) {
-
-        StringBuilder out = new StringBuilder();
-        String line;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-            while ((line = reader.readLine()) != null) {
-                out.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void setEntity(HttpPost post, List<NameValuePair> pairs) {
+        try {
+            post.setEntity(new UrlEncodedFormEntity(pairs, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            // will not happen
         }
-
-        return out.toString();
     }
 }

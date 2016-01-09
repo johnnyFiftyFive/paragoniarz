@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
  * @author johnnyFiftyFive
  */
 @Repository
-public class RawReceiptRepositorySql2o extends CommonRepository implements RawReceiptRepository {
+public class RawReceiptRepositorySql2o extends CommonRepository<RawReceipt> implements RawReceiptRepository {
 
     private static String INSERT = "INSERT INTO RAW_RECEIPT(text) values(:text)";
 

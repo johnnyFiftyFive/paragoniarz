@@ -3,17 +3,28 @@ package org.j55.paragoniarz.db;
 import org.j55.paragoniarz.processing.Receipt;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author johnnyFiftyFive
  */
 @Repository
-public class ReceiptRepositorySql2O extends CommonRepository implements ReceiptRepository {
+public class ReceiptRepositorySql2O extends CommonRepository<Receipt> implements ReceiptRepository {
 
     private static final String INSERT = "INSERT INTO RECEIPT(taxNumber, transactionDate, receiptNumber, cashId, total, sourceId) VALUES(" +
             ":taxNumber, :date, :receiptNumber, :cashId, :total, :sourceId);";
+
+    private static String SELECT_TO_PROCESS = "SELECT FROM RECEIPT(id, taxNumber, transactionDate, receiptNumber, cashId, total, status, sourceId) " +
+            "WHERE status=10";
 
     @Override public void save(Receipt receipt) {
         Integer id = save(receipt, INSERT);
         receipt.setId(id);
     }
+
+    @Override public List<Receipt> getUnprocessed() {
+        return select(SELECT_TO_PROCESS, Receipt.class);
+    }
+
+
 }

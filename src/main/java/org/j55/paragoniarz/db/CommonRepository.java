@@ -7,13 +7,15 @@ import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
+import java.util.List;
+
 /**
  * @author johnnyFiftyFive
  */
 @Service
-public abstract class CommonRepository {
-    private static final Sql2o db = new Sql2o("jdbc:sqlite:paragoniarz.sqlite", "", "");
+public abstract class CommonRepository<T> {
     protected static final Logger logger = LoggerFactory.getLogger(CommonRepository.class);
+    private static final Sql2o db = new Sql2o("jdbc:sqlite:paragoniarz.sqlite", "", "");
 
     /**
      * @return opened connection
@@ -28,6 +30,13 @@ public abstract class CommonRepository {
                     .bind(entity)
                     .executeUpdate()
                     .getKey();
+        }
+    }
+
+    protected List<? extends T> select(String sql, Class<? extends T> clazz) {
+        try (Connection conn = openConnection()) {
+            return conn.createQuery(sql)
+                    .executeAndFetch(clazz);
         }
     }
 }
