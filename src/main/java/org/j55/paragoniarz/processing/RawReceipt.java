@@ -4,7 +4,7 @@ package org.j55.paragoniarz.processing;
  * @author johnnyFiftyFive
  */
 public class RawReceipt {
-    private long id;
+    private Integer id;
     private String text;
 
     public RawReceipt() {
@@ -14,16 +14,16 @@ public class RawReceipt {
         this.text = text;
     }
 
-    public RawReceipt(long id, String text) {
+    public RawReceipt(Integer id, String text) {
         this.id = id;
         this.text = text;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

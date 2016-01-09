@@ -22,7 +22,7 @@ public abstract class CommonRepository {
         return db.open();
     }
 
-    protected int save(Object entity, String sql) {
+    protected Integer save(Object entity, String sql) {
         try (Connection conn = openConnection()) {
             return (Integer) conn.createQuery(sql, true)
                     .bind(entity)

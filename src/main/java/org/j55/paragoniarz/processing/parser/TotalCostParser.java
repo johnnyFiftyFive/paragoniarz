@@ -25,7 +25,7 @@ public class TotalCostParser extends Parser {
     @Override
     public boolean parse(String text, Receipt receipt) {
         Optional<String> total = match(text).flatMap(t -> match(TOTAL, t));
-        total.ifPresent(receipt::setSum);
+        total.ifPresent(receipt::setTotal);
 
         return total.isPresent();
     }

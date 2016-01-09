@@ -8,11 +8,29 @@ import java.time.LocalDate;
  * @author johnnyFiftyFive
  */
 public class Receipt {
+    private Integer id;
     private String taxNumber;
     private LocalDate date;
     private String receiptNumber;
     private String cashId;
-    private String sum;
+    private String total;
+    private Integer sourceId;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(Integer sourceId) {
+        this.sourceId = sourceId;
+    }
 
     public String getTaxNumber() {
         return taxNumber;
@@ -46,16 +64,16 @@ public class Receipt {
         this.cashId = cashId;
     }
 
-    public String getSum() {
-        return sum;
+    public String getTotal() {
+        return total;
     }
 
-    public void setSum(String sum) {
-        this.sum = sum;
+    public void setTotal(String total) {
+        this.total = total;
     }
 
     @Override
     public String toString() {
-        return String.format("{ 'taxNumber': '%s',\t 'date': '%s',\t 'receiptNumber': '%s',\t 'cashId': '%s',\t 'sum': '%s' }", taxNumber, date, receiptNumber, cashId, sum);
+        return String.format("{ 'taxNumber': '%s',\t 'date': '%s',\t 'receiptNumber': '%s',\t 'cashId': '%s',\t 'total': '%s' }", taxNumber, date, receiptNumber, cashId, total);
     }
 }

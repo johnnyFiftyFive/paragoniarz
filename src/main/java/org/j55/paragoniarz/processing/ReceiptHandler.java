@@ -3,6 +3,7 @@ package org.j55.paragoniarz.processing;
 import net.sourceforge.tess4j.Tesseract1;
 import net.sourceforge.tess4j.TesseractException;
 import org.j55.paragoniarz.db.RawReceiptRepository;
+import org.j55.paragoniarz.db.ReceiptRepository;
 import org.j55.paragoniarz.processing.parser.ParserSuite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,9 @@ public class ReceiptHandler {
     @Autowired
     private RawReceiptRepository rawReceiptRepo;
 
+    @Autowired
+    private ReceiptRepository receiptRepo;
+
     private Tesseract1 ocr;
 
     public ReceiptHandler() {
@@ -43,10 +47,11 @@ public class ReceiptHandler {
             RawReceipt raw = new RawReceipt(ocr.doOCR(image));
             rawReceiptRepo.save(raw);
             Receipt receipt = parserSuite.parse(raw.getText());
+            receipt.setSourceId(raw.getId());
+            receiptRepo.save(receipt);
             logger.info(receipt.toString());
         } catch (TesseractException e) {
             logger.error("Error during character recognition!", e);
-            return;
         }
 
     }
