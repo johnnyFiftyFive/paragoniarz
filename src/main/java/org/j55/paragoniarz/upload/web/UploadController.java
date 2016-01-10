@@ -32,8 +32,11 @@ public class UploadController {
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public @ResponseBody String upload(@RequestParam("file") MultipartFile file) throws IOException {
-        receiptReader.read(ImageIO.read(file.getInputStream()));
+    public @ResponseBody String upload(@RequestParam("file") MultipartFile[] file) throws IOException {
+        for (MultipartFile multipartFile : file) {
+            receiptReader.read(ImageIO.read(multipartFile.getInputStream()));
+        }
+
         return "ok";
     }
 }

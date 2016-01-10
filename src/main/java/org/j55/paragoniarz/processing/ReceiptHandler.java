@@ -41,7 +41,7 @@ public class ReceiptHandler {
     }
 
     @Async
-    public void read(BufferedImage inputImg) {
+    public synchronized void read(BufferedImage inputImg) {
         BufferedImage image = imageProcessor.process(inputImg);
         try {
             RawReceipt raw = new RawReceipt(ocr.doOCR(image));

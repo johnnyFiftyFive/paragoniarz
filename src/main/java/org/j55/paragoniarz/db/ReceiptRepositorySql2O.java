@@ -21,6 +21,8 @@ public class ReceiptRepositorySql2O extends CommonRepository<Receipt> implements
 
     private static final String UPDATE_INPROGRESS = "UPDATE RECEIPT SET status = " + Receipt.STATUS_INPROGRESS + " WHERE id=:id AND status=" + Receipt.STATUS_READY;
 
+    private static final String UPDATE = "UPDATE RECEIPT SET status=:status WHERE id=:id";
+
     @Override public void save(Receipt receipt) {
         Integer id = save(receipt, INSERT);
         receipt.setId(id);

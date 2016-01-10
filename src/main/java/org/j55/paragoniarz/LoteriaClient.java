@@ -53,6 +53,7 @@ public class LoteriaClient {
                     .getContent());
             HttpPost post = prepareLoginReq(token);
             executeRequest(post);
+            post.reset();
             get.reset();
 
             HttpResponse afterLogin = executeRequest(get);

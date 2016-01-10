@@ -6,6 +6,7 @@ import org.j55.paragoniarz.db.ReceiptRepositorySql2O;
 import org.j55.paragoniarz.processing.Receipt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.expression.spel.support.ReflectiveConstructorExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,11 +26,11 @@ public class DbListener {
         logger.info("DbListener started");
     }
 
-    public static void main(String[] args) {
+  /*  public static void main(String[] args) {
         Thread t = new Thread(new Listener());
         t.setName(DbListener.class.getSimpleName());
         t.start();
-    }
+    }*/
 
     private static class Listener implements Runnable {
         private final static ReceiptRepository repo = new ReceiptRepositorySql2O();
@@ -41,18 +42,21 @@ public class DbListener {
                 if (unprocessed.isEmpty()) {
                     logger.info("[listener] NO TASKS TO PROCESS");
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(10000);
                         continue;
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        logger.error("Exception caugth", e);
                     }
                 }
                 logger.info("[listener] got " + unprocessed.size() + " to process.");
                 for (Receipt receipt : unprocessed) {
                     try {
                         client.pushReceipt(receipt);
+                        logger.info("Receipt succesfully pushed");
+                        receipt.setStatus(Receipt.STATUS_DONE);
                     } catch (ClientException e) {
                         logger.error("Error while sending receipt", e);
+                        receipt.setStatus(Receipt.STATUS_ERROR);
                     }
                 }
 

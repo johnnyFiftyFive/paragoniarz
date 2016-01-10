@@ -20,9 +20,11 @@ import java.util.Map;
 @Service
 public abstract class CommonRepository<T> {
     protected static final Logger logger = LoggerFactory.getLogger(CommonRepository.class);
+
     private static final Map<Class, Converter> CONVERTERS = new HashMap<Class, Converter>() {{
         put(LocalDate.class, new LocalDateConverter());
     }};
+
     protected static final Sql2o db = new Sql2o("jdbc:sqlite:paragoniarz.sqlite", "", "", new NoQuirks(CONVERTERS));
 
     /**
