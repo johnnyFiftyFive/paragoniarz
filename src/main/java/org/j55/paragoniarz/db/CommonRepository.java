@@ -23,7 +23,7 @@ public abstract class CommonRepository<T> {
     private static final Map<Class, Converter> CONVERTERS = new HashMap<Class, Converter>() {{
         put(LocalDate.class, new LocalDateConverter());
     }};
-    private static final Sql2o db = new Sql2o("jdbc:sqlite:paragoniarz.sqlite", "", "", new NoQuirks(CONVERTERS));
+    protected static final Sql2o db = new Sql2o("jdbc:sqlite:paragoniarz.sqlite", "", "", new NoQuirks(CONVERTERS));
 
     /**
      * @return opened connection

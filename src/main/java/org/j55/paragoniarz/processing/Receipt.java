@@ -8,6 +8,11 @@ import java.time.LocalDate;
  * @author johnnyFiftyFive
  */
 public class Receipt {
+    public static final int STATUS_NEW = 0;
+    public static final int STATUS_READY = 10;
+    public static final int STATUS_INPROGRESS = 50;
+    public static final int STATUS_DONE = 99;
+
     private Integer id;
     private String taxNumber;
     private LocalDate transactionDate;

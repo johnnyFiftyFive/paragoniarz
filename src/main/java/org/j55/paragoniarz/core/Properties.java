@@ -14,7 +14,8 @@ public class Properties {
     private static java.util.Properties properties;
 
     static {
-        InputStream is = Properties.class.getResourceAsStream("app.properties");
+        InputStream is = Properties.class.getResourceAsStream("/app.properties");
+        properties = new java.util.Properties();
         try {
             properties.load(is);
         } catch (IOException e) {

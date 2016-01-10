@@ -1,6 +1,5 @@
 package org.j55.paragoniarz;
 
-import com.sun.istack.internal.NotNull;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -22,7 +21,10 @@ import org.jsoup.nodes.Element;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -33,8 +35,8 @@ import static org.j55.paragoniarz.Constants.*;
  * @author johnnyFiftyFive
  */
 public class LoteriaClient {
-    private static final String ADDRESS = "https://loteriaparagonowa.gov.pl";
-
+    private static final String ADDRESS = "https://loteriaparagonowa.gov.pl/";
+    private static final String USER_AGENT = "Mozilla/5.0";
     private String cookies = "";
     private HttpClient httpclient;
 
@@ -80,7 +82,7 @@ public class LoteriaClient {
 
     private HttpResponse executeRequest(HttpRequestBase req) throws IOException, ClientException {
         HttpResponse resp = httpclient.execute(req);
-        setCookies(resp.getFirstHeader("set-cookie").toString());
+        setCookies(resp.getFirstHeader("set-cookie").getValue());
         int status = resp.getStatusLine().getStatusCode();
         if (status != 200) {
             throw new ClientException("Something is not right with the response, status=" + status);
@@ -106,7 +108,7 @@ public class LoteriaClient {
         return get;
     }
 
-    private HttpPost prepareLoginReq(@NotNull String token) {
+    private HttpPost prepareLoginReq(String token) {
         HttpPost post = new HttpPost(ADDRESS + "/auth/login");
         post.setHeaders(createHeaders(token));
 
@@ -119,7 +121,7 @@ public class LoteriaClient {
         return post;
     }
 
-    private HttpPost prepareReceiptReq(Receipt receipt, String token, @NotNull String captcha) throws ClientException {
+    private HttpPost prepareReceiptReq(Receipt receipt, String token, String captcha) throws ClientException {
         if (captcha.isEmpty()) {
             throw new ClientException("Captcha is empty");
         }
@@ -128,13 +130,10 @@ public class LoteriaClient {
 
         List<NameValuePair> pairs = new ArrayList<>(15);
         pairs.add(new BasicNameValuePair(CASH_ID, receipt.getCashId()));
-        pairs.add(new BasicNameValuePair(TAX_NUMBER, "6271159856"));
-        pairs.add(new BasicNameValuePair(YEAR, "2016"));
-        pairs.add(new BasicNameValuePair(MONTH, "01"));
-        pairs.add(new BasicNameValuePair(DAY, "07"));
-        pairs.add(new BasicNameValuePair(PRINT_NUMBER, "001199"));
-        pairs.add(new BasicNameValuePair(TOTAL_ZL, "17"));
-        pairs.add(new BasicNameValuePair(TOTAL_GR, "00"));
+        pairs.add(new BasicNameValuePair(TAX_NUMBER, receipt.getTaxNumber()));
+        pairs.addAll(addDate(receipt.getTransactionDate()));
+        pairs.addAll(addTotal(receipt.getTotal()));
+        pairs.add(new BasicNameValuePair(RECEIPT_NUMBER, receipt.getReceiptNumber()));
         pairs.add(new BasicNameValuePair(BUSINESS_TYPE, ""));
         pairs.add(new BasicNameValuePair(CAPTCHA, captcha));
         pairs.add(new BasicNameValuePair(DATA_AGGR, "true"));
@@ -146,12 +145,31 @@ public class LoteriaClient {
         return post;
     }
 
+    private List<NameValuePair> addTotal(String total) throws ClientException {
+        String[] tokens = total.split(",");
+        if (tokens.length != 2) {
+            throw new ClientException("Wrong format of total amount: " + total);
+        }
+
+        return Arrays.asList(
+                new BasicNameValuePair(TOTAL_ZL, tokens[0]),
+                new BasicNameValuePair(TOTAL_GR, tokens[1]));
+    }
+
+    private List<NameValuePair> addDate(LocalDate date) {
+        DecimalFormat df = new DecimalFormat("00");
+        return Arrays.asList(
+                new BasicNameValuePair(YEAR, String.valueOf(date.getYear())),
+                new BasicNameValuePair(MONTH, df.format(date.getMonthValue())),
+                new BasicNameValuePair(DAY, df.format(date.getDayOfMonth())));
+    }
+
 
     private Header[] createHeaders(String token) {
         Header[] headers = {
                 new BasicHeader("x-csrf-token", token),
                 new BasicHeader("cookie", cookies),
-                new BasicHeader("content-type", "application/x-www-form-urlencoded"),
+                new BasicHeader("content-type", "application/x-www-form-urlencoded; charset=UTF-8"),
                 new BasicHeader("origin", ADDRESS),
                 new BasicHeader("referer", ADDRESS)};
         return headers;

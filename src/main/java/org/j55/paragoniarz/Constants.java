@@ -10,7 +10,7 @@ public class Constants {
     public static final String YEAR = "rok";
     public static final String MONTH = "miesiac";
     public static final String DAY = "dzien";
-    public static final String PRINT_NUMBER = "nr_wydruku";
+    public static final String RECEIPT_NUMBER = "nr_wydruku";
     public static final String TOTAL_ZL = "kwota_zl";
     public static final String TOTAL_GR = "kwota_gr";
     public static final String EMAIL = "email";
