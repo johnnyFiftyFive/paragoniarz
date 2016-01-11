@@ -57,6 +57,8 @@ public class DbListener {
                     } catch (ClientException e) {
                         logger.error("Error while sending receipt", e);
                         receipt.setStatus(Receipt.STATUS_ERROR);
+                    }finally {
+                        repo.update(receipt);
                     }
                 }
 

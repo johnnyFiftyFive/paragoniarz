@@ -12,4 +12,6 @@ public interface ReceiptRepository {
     void save(Receipt receipt);
 
     List<Receipt> getUnprocessed();
+
+    void update(Receipt receipt);
 }

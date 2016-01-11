@@ -47,7 +47,7 @@ public abstract class CommonRepository<T> {
         try(Connection conn = openConnection()){
             conn.createQuery(sql)
                     .bind(entity)
-                    .executeUpdate;
+                    .executeUpdate();
         }
     }
 
