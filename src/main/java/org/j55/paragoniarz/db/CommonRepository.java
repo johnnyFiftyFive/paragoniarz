@@ -43,6 +43,14 @@ public abstract class CommonRepository<T> {
         }
     }
 
+    protected void update(Object entity, String sql){
+        try(Connection conn = openConnection()){
+            conn.createQuery(sql)
+                    .bind(entity)
+                    .executeUpdate;
+        }
+    }
+
     protected List<T> select(String sql, Class<T> clazz) {
         try (Connection conn = openConnection()) {
             return conn.createQuery(sql)
