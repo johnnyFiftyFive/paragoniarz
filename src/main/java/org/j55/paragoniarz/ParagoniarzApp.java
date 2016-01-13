@@ -15,7 +15,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 public class ParagoniarzApp {
     public static void main(String[] args) {
-
         SpringApplication.run(ParagoniarzApp.class, args);
     }
 }

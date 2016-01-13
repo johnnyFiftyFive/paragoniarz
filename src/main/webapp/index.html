@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pl">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+    <link rel="stylesheet" href="/milligram.min.css">
+    <style>
+       input[type="button"],input[type="submit"]{width:100%;}.form-holder{height:100%;min-height:100%;width:100%;min-width:100%;position:absolute;}.inner-box{width:50%;}.Aligner{display:flex;align-items:center;justify-content:center;}.Aligner-item{max-width:50%;}.Aligner-item--top{align-self:flex-start;}.Aligner-item--bottom{align-self:flex-end;}
+    </style>
+</head>
+
+<body>
+<div class="Aligner form-holder">
+    <div class="Aligner-item Aligner-item--fixed inner-box">
+        <form method="post" enctype="multipart/form-data" action="/upload">
+            <fieldset>
+                <input type="file" id="browse" name="file[]" onChange="handlechange();" multiple style="display:none;" >
+                <input type="text" id="filename" readonly="true" />
+                <div class="row">
+                    <div class="column column">
+                        <input type="button" class="" value="Wybierz " id="fakeBrowse" onclick="handleBrowseClick();">
+                    </div>
+                    <div class="column column ">
+                        <input type="submit" value="Wyślij">
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script src="main.js"></script>
+
+</body>
+
+</html>
