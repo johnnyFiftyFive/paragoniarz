@@ -1,8 +1,6 @@
 package org.j55.paragoniarz.processing;
 
-import Catalano.Imaging.Concurrent.Filters.Grayscale;
-import Catalano.Imaging.Concurrent.Filters.RosinThreshold;
-import Catalano.Imaging.Concurrent.Filters.Sharpen;
+import Catalano.Imaging.Concurrent.Filters.*;
 import Catalano.Imaging.FastBitmap;
 import Catalano.Imaging.Filters.BlobsFiltering;
 import Catalano.Imaging.Filters.ContrastCorrection;
@@ -30,7 +28,8 @@ public class ImagePreprocessor {
         List<IBaseInPlace> filters = Arrays.asList(
                 new Grayscale(Grayscale.Algorithm.GeometricMean),
                 new ContrastCorrection(90),
-                new RosinThreshold(),
+                //new RosinThreshold(),
+                new SauvolaThreshold(5),
                 new Sharpen(),
                 new BlobsFiltering(1, 4)
         );

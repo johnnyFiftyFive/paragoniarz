@@ -48,12 +48,14 @@ public class LoteriaClient {
     public void pushReceipt(Receipt receipt) throws ClientException {
         HttpGet get = new HttpGet(ADDRESS);
         try {
-            String token = extractToken(executeRequest(get)
-                    .getEntity()
-                    .getContent());
-            HttpPost post = prepareLoginReq(token);
-            executeRequest(post);
-            post.reset();
+            HttpResponse mainPageResp = executeRequest(get);
+            Document mainPage = Jsoup.parse(mainPageResp.getEntity().getContent(), "UTF-8", ADDRESS);
+            String token = extractToken(mainPage);
+            if (!isLoggedIn(mainPage)) {
+                HttpPost post = prepareLoginReq(token);
+                executeRequest(post);
+                post.reset();
+            }
             get.reset();
 
             HttpResponse afterLogin = executeRequest(get);
@@ -79,6 +81,10 @@ public class LoteriaClient {
             throw new ClientException("Communication error", e);
         }
 
+    }
+
+    private boolean isLoggedIn(Document mainPage) {
+        return mainPage.toString().contains("Wyloguj");
     }
 
     private HttpResponse executeRequest(HttpRequestBase req) throws IOException, ClientException {

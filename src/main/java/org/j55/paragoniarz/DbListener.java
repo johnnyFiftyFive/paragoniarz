@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author johnnyFiftyFive
@@ -35,9 +36,12 @@ public class DbListener {
         for (Receipt receipt : unprocessed) {
             try {
                 client.pushReceipt(receipt);
-                logger.info("Receipt succesfully pushed");
                 receipt.setStatus(Receipt.STATUS_DONE);
-            } catch (ClientException e) {
+                Random r = new Random();
+                int sleepTime = r.nextInt(40) * 1000 + 30000;
+                logger.info("Receipt succesfully pushed. Sleeping for " + sleepTime + " seconds");
+                Thread.sleep(sleepTime); // X seconds + 30 seconds
+            } catch (ClientException | InterruptedException e) {
                 logger.error("Error while sending receipt", e);
                 receipt.setStatus(Receipt.STATUS_ERROR);
             } finally {
