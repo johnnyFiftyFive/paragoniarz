@@ -19,7 +19,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -36,7 +35,7 @@ import static org.j55.paragoniarz.Constants.*;
  */
 public class LoteriaClient {
     private static final String ADDRESS = "https://loteriaparagonowa.gov.pl/";
-    private static final String USER_AGENT = "Mozilla/5.0";
+    private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.48 Safari/537.36 Vivaldi/1.0.365.3";
     private String cookies = "";
     private HttpClient httpclient;
 
@@ -173,19 +172,15 @@ public class LoteriaClient {
 
 
     private Header[] createHeaders(String token) {
-        Header[] headers = {
+        return new Header[]{
                 new BasicHeader("x-csrf-token", token),
                 new BasicHeader("cookie", cookies),
                 new BasicHeader("content-type", "application/x-www-form-urlencoded; charset=UTF-8"),
                 new BasicHeader("origin", ADDRESS),
-                new BasicHeader("referer", ADDRESS)};
-        return headers;
+                new BasicHeader("referer", ADDRESS),
+                new BasicHeader("user-agent", USER_AGENT)};
     }
 
-    private String extractToken(InputStream is) throws IOException {
-        Document doc = Jsoup.parse(is, "UTF-8", ADDRESS);
-        return extractToken(doc);
-    }
 
     private String extractToken(Document doc) {
         Element metaToken = doc.head().getElementsByAttributeValue("name", "csrf-token").get(0);

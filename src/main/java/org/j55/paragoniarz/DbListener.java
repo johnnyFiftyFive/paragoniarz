@@ -38,9 +38,9 @@ public class DbListener {
                 client.pushReceipt(receipt);
                 receipt.setStatus(Receipt.STATUS_DONE);
                 Random r = new Random();
-                int sleepTime = r.nextInt(40) * 1000 + 30000;
+                int sleepTime = r.nextInt(30) * 1000 + 40000;
                 logger.info("Receipt succesfully pushed. Sleeping for " + sleepTime + " seconds");
-                Thread.sleep(sleepTime); // X seconds + 30 seconds
+                Thread.sleep(sleepTime); // X seconds + 40 seconds
             } catch (ClientException | InterruptedException e) {
                 logger.error("Error while sending receipt", e);
                 receipt.setStatus(Receipt.STATUS_ERROR);
