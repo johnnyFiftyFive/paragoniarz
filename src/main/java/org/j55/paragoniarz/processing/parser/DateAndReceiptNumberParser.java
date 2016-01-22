@@ -2,6 +2,7 @@ package org.j55.paragoniarz.processing.parser;
 
 import org.j55.paragoniarz.processing.Receipt;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Optional;
@@ -29,9 +30,13 @@ public class DateAndReceiptNumberParser extends Parser {
             Optional<String> number = line
                     .map(l -> l.replaceFirst(DATE.pattern(), ""))
                     .flatMap(n -> match(RECEIPT_NUMBER, n));
-            date.map(s -> s.replaceAll("[\\s]", "-"))
-                    .map(LocalDate::parse)
-                    .ifPresent(receipt::setTransactionDate);
+            try {
+                date.map(s -> s.replaceAll("[\\s]", "-"))
+                        .map(LocalDate::parse)
+                        .ifPresent(receipt::setTransactionDate);
+            } catch (DateTimeException e) {
+                // can happen
+            }
             number.ifPresent(receipt::setReceiptNumber);
 
             return date.isPresent() && number.isPresent();

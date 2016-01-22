@@ -42,7 +42,7 @@ public class DbListener {
                 logger.info("Receipt succesfully pushed. Sleeping for " + sleepTime + " seconds");
                 Thread.sleep(sleepTime); // X seconds + 40 seconds
             } catch (ClientException | InterruptedException e) {
-                logger.error("Error while sending receipt", e);
+                logger.error("Error while sending receipt=" + receipt, e);
                 receipt.setStatus(Receipt.STATUS_ERROR);
             } finally {
                 repo.update(receipt);
