@@ -1,0 +1,47 @@
+body {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+input[type="button"],
+input[type="submit"] {
+    width: 100%;
+    padding: 0 0 0 0;
+}
+img {
+    height: 1.5em;
+}
+
+#form-holder {
+    height: 100%;
+    min-height: 100%;
+    width: 100%;
+    min-width: 100%;
+    position: absolute;
+}
+
+#list-holder {
+    width: 100%
+}
+
+.center{
+    text-align:center;
+}
+
+.inner-box {
+    width: 50%;
+}
+.Aligner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.Aligner-item {
+    max-width: 50%;
+}
+.Aligner-item--top {
+    align-self: flex-start;
+}
+.Aligner-item--bottom {
+    align-self: flex-end;
+}

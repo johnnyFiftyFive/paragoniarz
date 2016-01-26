@@ -1,5 +1,6 @@
 package org.j55.paragoniarz;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -17,9 +18,9 @@ import org.j55.paragoniarz.processing.Receipt;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,9 +39,11 @@ public class LoteriaClient {
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.48 Safari/537.36 Vivaldi/1.0.365.3";
     private String cookies = "";
     private HttpClient httpclient;
+    private ObjectMapper mapper;
 
     public LoteriaClient() {
         httpclient = HttpClients.createDefault();
+        mapper = new ObjectMapper();
     }
 
 
@@ -73,13 +76,23 @@ public class LoteriaClient {
             captchaUpdateReq.reset();
 
             HttpPost addReceiptReq = prepareReceiptReq(receipt, token, captcha);
-            executeRequest(addReceiptReq);
+            HttpResponse addReceiptResp = executeRequest(addReceiptReq);
+            String internalNumber = extractInternalNumber(addReceiptResp.getEntity().getContent());
+            receipt.setInternalNumber(internalNumber);
             addReceiptReq.reset();
-
         } catch (IOException e) {
             throw new ClientException("Communication error", e);
         }
+    }
 
+    private String extractInternalNumber(InputStream json) throws IOException {
+        Message msg = mapper.readValue(json, Message.class);
+        Document doc = Jsoup.parse(msg.getMessage());
+        Elements elements = doc.getElementsByClass("recipe-number");
+        if (!elements.isEmpty()) {
+            return elements.first().text();
+        }
+        return null;
     }
 
     private boolean isLoggedIn(Document mainPage) {
@@ -209,4 +222,5 @@ public class LoteriaClient {
             // will not happen
         }
     }
+
 }

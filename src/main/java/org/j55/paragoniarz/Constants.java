@@ -3,7 +3,7 @@ package org.j55.paragoniarz;
 /**
  * @author johnnyFiftyFive
  */
-public class Constants {
+public abstract class Constants {
     public static final String CASH_ID = "nr_kasy";
     public static final String TAX_NUMBER = "nip";
     public static final String PHONE_NUMBER = "nr_tel";

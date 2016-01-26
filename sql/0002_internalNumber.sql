@@ -1,0 +1,1 @@
+alter table RECEIPT add column 'internalNumber' varchar;

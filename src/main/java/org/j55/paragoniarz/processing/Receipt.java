@@ -22,6 +22,7 @@ public class Receipt {
     private String total;
     private int status;
     private Integer sourceId;
+    private String internalNumber;
 
     public Integer getId() {
         return id;
@@ -90,5 +91,13 @@ public class Receipt {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public void setInternalNumber(String internalNumber) {
+        this.internalNumber = internalNumber;
+    }
+
+    public String getInternalNumber() {
+        return internalNumber;
     }
 }

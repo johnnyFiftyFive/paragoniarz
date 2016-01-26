@@ -2,20 +2,20 @@
 <html lang="pl">
 <head>
     <meta charset="utf-8"/>
+    <title>Paragony</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css"/>
-    <link rel="stylesheet" href="/milligram.min.css"/>
-    <style>
-        input[type="button"],input[type="submit"]{width:100%;}.form-holder{height:100%;min-height:100%;width:100%;min-width:100%;position:absolute;}.inner-box{width:50%;}.Aligner{display:flex;align-items:center;justify-content:center;}.Aligner-item{max-width:50%;}.Aligner-item--top{align-self:flex-start;}.Aligner-item--bottom{align-self:flex-end;}
-    </style>
+    <link rel="stylesheet" th:href="@{/milligram.min.css}" href="../static/milligram.min.css"/>
+    <link rel="stylesheet" th:href="@{/main.css}" href="../static/main.css"/>
 </head>
 
 <body>
-<div class="Aligner form-holder">
-    <div class="Aligner-item Aligner-item--fixed inner-box">
+<div id="form-holder" class="Aligner">
+    <div class="Aligner-item Aligner-item--top inner-box">
         <form method="post" enctype="multipart/form-data" action="/upload">
             <fieldset>
-                <input type="file" id="browse" name="file[]" onChange="handlechange();" multiple="true" style="display:none;"/>
+                <input type="file" id="browse" name="file[]" onChange="handlechange();" multiple="true"
+                       style="display:none;"/>
                 <input type="text" id="filename" readonly="true"/>
                 <div class="row">
                     <div class="column column">
@@ -27,7 +27,29 @@
                 </div>
             </fieldset>
         </form>
+        <div id="list-holder" class="container">
+            <form method="post" enctype="multipart/form-data" action="/uploadForm">
+                <div class="row">
+                    <div class="column column"><input type="text" name="taxNumber" size="10" placeholder="NIP"/></div>
+                    <div class="column column"><input type="text" name="transactionDate" size="10" placeholder="Data"/>
+                    </div>
+                    <div class="column column"><input type="text" name="receiptNumber" placeholder="Numer wydruku"/>
+                    </div>
+                    <div class="column column"><input type="text" name="total" placeholder="Kwota"/></div>
+                    <div class="column column"><input type="text" name="cashId" size="10" placeholder="Numer kasy"/>
+                    </div>
+                    <div class="column column-10">
+                        <input type="submit" value="Wyślij"/>
+                        <!--<a href="#" onclick="send()"><img src="../static/send.png" th:src="@{/send.png}"-->
+                                                          <!--alt="send"/></a>-->
+                        <!--<a href="#" onclick="clear()"><img src="../static/cancel.png" th:src="@{/cancel.png}"-->
+                                                           <!--alt="clear"/></a>-->
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
+
 </div>
 
 <script src="main.js"></script>
