@@ -11,7 +11,7 @@ public class Properties {
     public static final String PASS = "paragoniarz.pass";
     public static final String PHONE = "paragoniarz.phone";
 
-    private static java.util.Properties properties;
+    private static final java.util.Properties properties;
 
     static {
         InputStream is = Properties.class.getResourceAsStream("/app.properties");

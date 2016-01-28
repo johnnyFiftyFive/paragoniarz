@@ -25,8 +25,6 @@ public class ReceiptRepositorySql2O extends CommonRepository<Receipt> implements
         receipt.setId(id);
     }
 
-
-
     @Override public List<Receipt> getUnprocessed() {
         try (Connection conn = db.beginTransaction(java.sql.Connection.TRANSACTION_SERIALIZABLE)) {
             List<Receipt> unprocessed = conn.createQuery(SELECT_TO_PROCESS)
@@ -38,13 +36,11 @@ public class ReceiptRepositorySql2O extends CommonRepository<Receipt> implements
                     update.addParameter("id", receipt.getId())
                             .addToBatch();
                 }
-
                 update.executeBatch();
                 conn.commit();
             }
             return unprocessed;
         }
-
     }
 
     @Override public void update(Receipt receipt) {

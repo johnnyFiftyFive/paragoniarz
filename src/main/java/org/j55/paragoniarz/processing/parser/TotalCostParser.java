@@ -18,7 +18,7 @@ public class TotalCostParser extends Parser {
         patterns = Arrays.asList(Pattern.compile("SUMA\\s*(PLN)?\\s*\\d*[,\\.]\\d{2}", DOTALL),
                 Pattern.compile("Suma\\s*(PLN)?\\s*\\d*[,\\.]\\d{2}", DOTALL),
                 Pattern.compile("Płatność.*\\s\\d*[,\\.]\\d{2}", DOTALL),
-                Pattern.compile("Karta (kredytowa|płatnicza).*\\s\\d*[\\,\\.]\\d{2}", DOTALL),
+                Pattern.compile("Karta (kredytowa|płatnicza).*\\s\\d*[,\\.]\\d{2}", DOTALL),
                 Pattern.compile("[A-Z]{4}\\s*[A-Z]{0,3}?\\s*\\d*[,\\.]\\d{2}", DOTALL));
     }
 

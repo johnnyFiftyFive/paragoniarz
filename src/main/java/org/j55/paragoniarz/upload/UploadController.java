@@ -1,5 +1,6 @@
 package org.j55.paragoniarz.upload;
 
+import org.j55.paragoniarz.db.ReceiptRepository;
 import org.j55.paragoniarz.processing.Receipt;
 import org.j55.paragoniarz.processing.ReceiptHandler;
 import org.j55.paragoniarz.processing.parser.CashIdParser;
@@ -31,6 +32,9 @@ public class UploadController {
     @Autowired
     private ReceiptHandler receiptReader;
 
+    @Autowired
+    private ReceiptRepository receiptRepo;
+
     @RequestMapping("/")
     public ModelAndView main() {
         return new ModelAndView("upload");
@@ -46,9 +50,10 @@ public class UploadController {
     }
 
     @RequestMapping(value = "/uploadForm", method = RequestMethod.POST)
-    public String uploadByForm(HttpServletRequest request) throws IOException {
-        Receipt raw = createReceipt(request.getParameterMap());
-        logger.info("Received receipt: " + raw.toString());
+    public String uploadByForm(HttpServletRequest request){
+        Receipt receipt = createReceipt(request.getParameterMap());
+        logger.info("Received receipt: " + receipt.toString());
+        receiptRepo.save(receipt);
 
         return "redirect:/";
     }
@@ -59,6 +64,7 @@ public class UploadController {
         new DateAndReceiptNumberParser().parse(data.get("transactionDate")[0] + " " + data.get("receiptNumber")[0], r);
         new CashIdParser().parse(data.get("cashId")[0], r);
         r.setTotal(data.get("total")[0]);
+        r.setStatus(10);
 
         return r;
     }

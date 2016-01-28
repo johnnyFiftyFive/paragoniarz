@@ -80,11 +80,6 @@ public class Receipt {
         this.total = total;
     }
 
-    @Override
-    public String toString() {
-        return String.format("{ 'taxNumber': '%s',\t 'transactionDate': '%s',\t 'receiptNumber': '%s',\t 'cashId': '%s',\t 'total': '%s' }", taxNumber, transactionDate, receiptNumber, cashId, total);
-    }
-
     public int getStatus() {
         return status;
     }
@@ -99,5 +94,10 @@ public class Receipt {
 
     public String getInternalNumber() {
         return internalNumber;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("{ 'taxNumber': '%s',\t 'transactionDate': '%s',\t 'receiptNumber': '%s',\t 'cashId': '%s',\t 'total': '%s' }", taxNumber, transactionDate, receiptNumber, cashId, total);
     }
 }

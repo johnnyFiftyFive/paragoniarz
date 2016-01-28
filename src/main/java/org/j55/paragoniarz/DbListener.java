@@ -19,10 +19,12 @@ import java.util.Random;
 @Component
 public class DbListener {
     private final static Logger logger = LoggerFactory.getLogger(DbListener.class);
-    private final static LoteriaClient client = new LoteriaClient();
 
     @Autowired
     private ReceiptRepository repo;
+
+    @Autowired
+    private LoteriaClient client;
 
     @Scheduled(fixedRate = 5000)
     public void run() {
