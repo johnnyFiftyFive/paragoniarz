@@ -3,13 +3,7 @@ version '0.0.1'
 
 buildscript {
     repositories {
-        maven {
-            url 'https://artifactory.pl.ing-ad/artifactory/plugins-release'
-            credentials {
-                username = System.getProperty('ARTIFACTORY_USER') != null ? System.getProperty('ARTIFACTORY_USER') : "$System.env.ARTIFACTORY_USER"
-                password = System.getProperty('ARTIFACTORY_PASS') != null ? System.getProperty('ARTIFACTORY_PASS') : "$System.env.ARTIFACTORY_PASS"
-            }
-        }
+        mavenCentral()
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.3.1.RELEASE"
@@ -22,13 +16,7 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
 repositories {
-    maven {
-            url "https://artifactory.pl.ing-ad/artifactory/repo"
-            credentials {
-                username = System.getProperty('ARTIFACTORY_USER') != null ? System.getProperty('ARTIFACTORY_USER') : "$System.env.ARTIFACTORY_USER"
-                password = System.getProperty('ARTIFACTORY_PASS') != null ? System.getProperty('ARTIFACTORY_PASS') : "$System.env.ARTIFACTORY_PASS"
-            }
-        }
+    mavenCentral()
 }
 
 dependencies {
@@ -46,6 +34,7 @@ dependencies {
     compile 'org.imgscalr:imgscalr-lib:4.2'
     compile 'org.apache.httpcomponents:httpclient:4.5.1'
     compile 'org.jsoup:jsoup:1.8.3'
+    compile 'org.json:json:20151123'
 
     /* The application consists on Catalano Framework libs, which should be placed in directory libs */
     compile fileTree(dir: 'libs', include: '*.jar')

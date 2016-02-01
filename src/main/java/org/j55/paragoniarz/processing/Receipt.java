@@ -20,9 +20,13 @@ public class Receipt {
     private String receiptNumber;
     private String cashId;
     private String total;
-    private int status;
+    private Integer status;
     private Integer sourceId;
     private String internalNumber;
+
+    public Receipt(){
+        this.status = 0;
+    }
 
     public Integer getId() {
         return id;

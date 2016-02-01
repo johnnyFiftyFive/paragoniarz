@@ -26,7 +26,7 @@ public class DbListener {
     @Autowired
     private LoteriaClient client;
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 10000)
     public void run() {
         List<Receipt> unprocessed = repo.getUnprocessed();
         if (unprocessed.isEmpty()) {
