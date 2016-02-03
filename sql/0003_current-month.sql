@@ -1,0 +1,1 @@
+CREATE VIEW CURRENT_RECEIPTS AS SELECT * FROM RECEIPT WHERE strftime('%m', transactionDate) = strftime('%m', 'now')
